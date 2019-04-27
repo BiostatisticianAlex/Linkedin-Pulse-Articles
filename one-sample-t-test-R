@@ -1,0 +1,48 @@
+#Fuction for t-test
+#t.test(x, mu = 0, alternative = "two.sided")
+
+#Generate data
+set.seed(1234)
+data <- data.frame(
+  name = paste(rep("M",10), 1:10),
+  weight = round(rnorm(10, 20, 2), 1)
+)
+
+#Print the first 10 rows of the data
+head(data, 10)
+
+#Statistical summaries of weight
+summary(data$weight)
+
+#Make box-plot
+library(ggpubr)
+ggboxplot(data$weight,
+          ylab = "Weight (g)", xlab = F,
+          ggtheme = theme_minimal())
+
+#Check normality with Shapiro-Wilk Test
+shapiro.test(data$weight)     #=>  p-value = 0.6993
+
+#Q-Q plot
+ggqqplot(data$weight, ylab = "Mice's weight",
+         ggtheme = theme_minimal())
+
+#One sample t-test
+res <- t.test(data$weight, mu = 25)
+#Printing the results
+res
+
+#Check if the mean weight of mice is less than 25g (one-tailed test)
+t.test(data$weight, mu = 25, alternative = "less")
+
+#Check if the mean weight of mice is greater than 25g (one-tailed test)
+t.test(data$weight, mu = 25, alternative = "greater")
+
+#printing the p-value
+res$p.value
+
+#printing the mean
+res$estimate
+
+#printing the confidence interval
+res$conf.int
